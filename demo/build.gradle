@@ -37,5 +37,7 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-process:2.3.1'
     implementation 'androidx.lifecycle:lifecycle-runtime:2.3.1'
     implementation 'androidx.lifecycle:lifecycle-common-java8:2.3.1'
+    //implementation 'com.chartboost:chartboost-sdk:9.1.1'
     implementation project(':library')
+    //implementation 'com.github.mimikriapp:mimikriads:+'
 }

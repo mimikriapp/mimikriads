@@ -18,6 +18,17 @@ import com.applovin.sdk.AppLovinAd;
 import com.applovin.sdk.AppLovinAdLoadListener;
 import com.applovin.sdk.AppLovinAdSize;
 import com.applovin.sdk.AppLovinSdk;
+import com.chartboost.sdk.ads.Interstitial;
+import com.chartboost.sdk.callbacks.BannerCallback;
+import com.chartboost.sdk.callbacks.InterstitialCallback;
+import com.chartboost.sdk.events.CacheError;
+import com.chartboost.sdk.events.CacheEvent;
+import com.chartboost.sdk.events.ClickError;
+import com.chartboost.sdk.events.ClickEvent;
+import com.chartboost.sdk.events.DismissEvent;
+import com.chartboost.sdk.events.ImpressionEvent;
+import com.chartboost.sdk.events.ShowError;
+import com.chartboost.sdk.events.ShowEvent;
 import com.facebook.ads.InterstitialAdListener;
 import com.ironsource.mediationsdk.IronSource;
 import com.ironsource.mediationsdk.logger.IronSourceError;
@@ -36,7 +47,7 @@ public class InterstitialAd {
 
         private static final String TAG = "AdNetwork";
         private final Activity activity;
-
+        private Interstitial chartboostInterstitial = null;
         private com.facebook.ads.InterstitialAd fanInterstitialAd;
         private StartAppAd startAppAd;
         //        private com.unity3d.mediation.InterstitialAd unityInterstitialAd;
@@ -288,6 +299,48 @@ public class InterstitialAd {
                         break;
 
                     case Constant.IRONSOURCE:
+
+                    case Constant.CHARTBOOST:
+                        chartboostInterstitial = new Interstitial("start",new InterstitialCallback() {
+                            @Override
+                            public void onAdLoaded(@NonNull CacheEvent cacheEvent, @Nullable CacheError cacheError) {
+                                if (cacheError != null) {
+                                    //addToUILog("Interstitial cached error: " + cacheError.getCode().name());
+                                   // incrementCounter(failLoadCounter);
+                                    Log.d(TAG, "  chartboostInterstitial cacheError");
+                                    loadBackupInterstitialAd();
+                                } else {
+                                    //addToUILog("Interstitial cached");
+                                    Log.d(TAG, "  chartboostInterstitial on ad loaded");
+                                   // if(chartboostInterstitial != null) { chartboostInterstitial.cache();}
+                                   // chartboostInterstitial.cache();
+                                }
+                            }
+                            @Override
+                            public void onAdClicked(@NonNull ClickEvent clickEvent, @Nullable ClickError clickError) { }
+                            @Override
+                            public void onAdRequestedToShow(@NonNull ShowEvent showEvent) { }
+
+                            @Override
+                            public void onAdShown(@NonNull ShowEvent showEvent, @Nullable ShowError showError) {
+                                if(showError != null) {
+                                   // loadBackupInterstitialAd();
+                                   // chartboostInterstitial.cache();
+                                }else {
+                                   // chartboostInterstitial.cache();
+                                }
+                            }
+
+                            @Override
+                            public void onImpressionRecorded(@NonNull ImpressionEvent impressionEvent) {}
+
+                            @Override
+                            public void onAdDismiss(@NonNull DismissEvent dismissEvent) { }
+
+                         }, null);
+                        chartboostInterstitial.cache();
+                        break;
+
                     case Constant.FAN_BIDDING_IRONSOURCE:
                         IronSource.setInterstitialListener(new InterstitialListener() {
                             @Override
@@ -474,6 +527,47 @@ public class InterstitialAd {
                         break;
 
                     case Constant.IRONSOURCE:
+                    case Constant.CHARTBOOST:
+                        chartboostInterstitial = new Interstitial("start",new InterstitialCallback() {
+                            @Override
+                            public void onAdLoaded(@NonNull CacheEvent cacheEvent, @Nullable CacheError cacheError) {
+                                if (cacheError != null) {
+                                    //addToUILog("Interstitial cached error: " + cacheError.getCode().name());
+                                    // incrementCounter(failLoadCounter);
+                                    Log.d(TAG, "  chartboostInterstitial cacheError");
+                                   // loadBackupInterstitialAd();
+                                } else {
+                                    //addToUILog("Interstitial cached");
+                                    Log.d(TAG, "  chartboostInterstitial on ad loaded");
+                                    // if(chartboostInterstitial != null) { chartboostInterstitial.cache();}
+                                    // chartboostInterstitial.cache();
+                                }
+                            }
+                            @Override
+                            public void onAdClicked(@NonNull ClickEvent clickEvent, @Nullable ClickError clickError) { }
+                            @Override
+                            public void onAdRequestedToShow(@NonNull ShowEvent showEvent) { }
+
+                            @Override
+                            public void onAdShown(@NonNull ShowEvent showEvent, @Nullable ShowError showError) {
+                                if(showError != null) {
+                                    // loadBackupInterstitialAd();
+                                    // chartboostInterstitial.cache();
+                                }else {
+                                    // chartboostInterstitial.cache();
+                                }
+                            }
+
+                            @Override
+                            public void onImpressionRecorded(@NonNull ImpressionEvent impressionEvent) {}
+
+                            @Override
+                            public void onAdDismiss(@NonNull DismissEvent dismissEvent) { }
+
+                        }, null);
+                        chartboostInterstitial.cache();
+                        break;
+
                     case Constant.FAN_BIDDING_IRONSOURCE:
                         IronSource.setInterstitialListener(new InterstitialListener() {
                             @Override
@@ -595,6 +689,13 @@ public class InterstitialAd {
                             break;
 
                         case Constant.IRONSOURCE:
+
+                        case Constant.CHARTBOOST:
+                            if(chartboostInterstitial != null) {
+                                chartboostInterstitial.show();
+                            }
+                            break;
+
                         case Constant.FAN_BIDDING_IRONSOURCE:
                             if (IronSource.isInterstitialReady()) {
                                 IronSource.showInterstitial(ironSourceInterstitialId);
@@ -672,6 +773,13 @@ public class InterstitialAd {
                         break;
 
                     case Constant.IRONSOURCE:
+
+                    case Constant.CHARTBOOST:
+                        if(chartboostInterstitial != null) {
+                            chartboostInterstitial.show();
+                        }
+                        break;
+
                     case Constant.FAN_BIDDING_IRONSOURCE:
                         if (IronSource.isInterstitialReady()) {
                             IronSource.showInterstitial(ironSourceInterstitialId);

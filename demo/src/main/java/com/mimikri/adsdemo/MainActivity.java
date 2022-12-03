@@ -2,15 +2,20 @@ package com.mimikri.adsdemo;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+
 
 import com.mimikri.ads.format.AdNetwork;
 import com.mimikri.ads.format.BannerAd;
 import com.mimikri.ads.format.InterstitialAd;
 import com.mimikri.ads.format.MediumRectangleAd;
 import com.mimikri.ads.format.NativeAd;
+
+import static com.mimikri.adsdemo.Constant.chartboost_app_id;
+import static com.mimikri.adsdemo.Constant.chartboost_signature;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -36,15 +41,18 @@ public class MainActivity extends AppCompatActivity {
         loadNativeAd();
 
         findViewById(R.id.btn_interstitial).setOnClickListener(v -> {
-            startActivity(new Intent(getApplicationContext(), SecondActivity.class));
+           // startActivity(new Intent(getApplicationContext(), SecondActivity.class));
             showInterstitialAd();
             bannerAd.destroyAndDetachBanner();
         });
 
+
+
+
     }
 
     private void initAds() {
-        adNetwork = new AdNetwork.Initialize(this)
+        adNetwork = new AdNetwork.Initialize(MainActivity.this)
                 .setAdStatus(Constant.AD_STATUS)
                 .setAdNetwork(Constant.AD_NETWORK)
                 .setBackupAdNetwork(Constant.BACKUP_AD_NETWORK)
@@ -53,6 +61,8 @@ public class MainActivity extends AppCompatActivity {
                 .setUnityGameId(Constant.UNITY_GAME_ID)
                 .setAppLovinSdkKey(getResources().getString(R.string.applovin_sdk_key))
                 .setIronSourceAppKey(Constant.IRONSOURCE_APP_KEY)
+                .setChartboost_app_id(chartboost_app_id)
+                .setChartboost_signature(chartboost_signature)
                 .setDebug(BuildConfig.DEBUG)
                 .build();
     }

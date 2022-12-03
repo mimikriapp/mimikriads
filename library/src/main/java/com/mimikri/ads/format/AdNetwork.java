@@ -3,11 +3,15 @@ package com.mimikri.ads.format;
 import android.app.Activity;
 import android.text.Html;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 
 import com.applovin.sdk.AppLovinMediationProvider;
 import com.applovin.sdk.AppLovinSdk;
+import com.chartboost.sdk.Chartboost;
+import com.chartboost.sdk.privacy.model.CCPA;
+import com.chartboost.sdk.privacy.model.GDPR;
 import com.ironsource.mediationsdk.IronSource;
 import com.mimikri.ads.R;
 import com.mimikri.ads.helper.AudienceNetworkInitializeHelper;
@@ -31,6 +35,8 @@ public class AdNetwork {
         private String appLovinSdkKey = "";
         private String mopubBannerId = "";
         private String ironSourceAppKey = "";
+        private String chartboost_app_id = "";
+        private String chartboost_signature = "";
         private boolean debug = true;
 
         public Initialize(Activity activity) {
@@ -87,6 +93,17 @@ public class AdNetwork {
             this.ironSourceAppKey = ironSourceAppKey;
             return this;
         }
+
+        public Initialize setChartboost_app_id(String chartboost_app_id) {
+            this.chartboost_app_id = chartboost_app_id;
+            return this;
+        }
+        public Initialize setChartboost_signature(String chartboost_signature) {
+            this.chartboost_signature = chartboost_signature;
+            return this;
+        }
+
+
 
         public Initialize setDebug(boolean debug) {
             this.debug = debug;
@@ -156,12 +173,21 @@ public class AdNetwork {
                     case Constant.APPLOVIN_DISCOVERY:
                         AppLovinSdk.initializeSdk(activity);
                         break;
-
-                    case Constant.MOPUB:
-                        //Mopub has been acquired by AppLovin
-                        break;
-
                     case Constant.IRONSOURCE:
+                    case Constant.CHARTBOOST:
+                        // Needs to be set before SDK init
+                        Chartboost.addDataUseConsent(activity, new GDPR(GDPR.GDPR_CONSENT.BEHAVIORAL));
+                        Chartboost.addDataUseConsent(activity, new CCPA(CCPA.CCPA_CONSENT.OPT_IN_SALE));
+                        Chartboost.startWithAppId(activity, chartboost_app_id, chartboost_signature, startError -> {
+                            if (startError == null) {
+                                Log.d(TAG, "CHARTBOOST SDK is initialized");
+                            } else {
+                                Log.d(TAG, "CHARTBOOST SDK initialized with error: "+startError.getCode().name());
+                                Log.d(TAG, "CHARTBOOST SDK "+"app_id="+chartboost_app_id+"_signature="+chartboost_signature);
+                            }
+                        });
+                        Chartboost.getDataUseConsent(activity, GDPR.GDPR_STANDARD);
+                        break;
                     case Constant.FAN_BIDDING_IRONSOURCE:
                         String advertisingId = IronSource.getAdvertiserId(activity);
                         IronSource.setUserId(advertisingId);
@@ -225,12 +251,20 @@ public class AdNetwork {
                     case Constant.APPLOVIN_DISCOVERY:
                         AppLovinSdk.initializeSdk(activity);
                         break;
-
-                    case Constant.MOPUB:
-                        //Mopub has been acquired by AppLovin
-                        break;
-
                     case Constant.IRONSOURCE:
+                    case Constant.CHARTBOOST:
+                        // Needs to be set before SDK init
+                        Chartboost.addDataUseConsent(activity, new GDPR(GDPR.GDPR_CONSENT.BEHAVIORAL));
+                        Chartboost.addDataUseConsent(activity, new CCPA(CCPA.CCPA_CONSENT.OPT_IN_SALE));
+                        Chartboost.startWithAppId(activity, chartboost_app_id, chartboost_signature, startError -> {
+                            if (startError == null) {
+                                Log.d(TAG, "CHARTBOOST SDK is initialized");
+
+                            } else {
+                                Log.d(TAG, "CHARTBOOST SDK initialized with error: "+startError.getCode().name());
+                            }
+                        });
+                        break;
                     case Constant.FAN_BIDDING_IRONSOURCE:
                         String advertisingId = IronSource.getAdvertiserId(activity);
                         IronSource.setUserId(advertisingId);

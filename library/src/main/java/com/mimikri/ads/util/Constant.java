@@ -15,6 +15,7 @@ public class Constant {
     public static final String APPLOVIN_MAX = "applovin_max";
     public static final String APPLOVIN_DISCOVERY = "applovin_discovery";
     public static final String IRONSOURCE = "ironsource";
+    public static final String CHARTBOOST = "chartboost";
     public static final String NONE = "none";
     //mopub ads is deprecated and has been acquired by applovin
     public static final String MOPUB = "mopub";

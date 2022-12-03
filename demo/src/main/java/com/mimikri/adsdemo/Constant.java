@@ -3,7 +3,7 @@ package com.mimikri.adsdemo;
 public class Constant {
 
     public static final String AD_STATUS = "1";
-    public static final String AD_NETWORK = "unity";
+    public static final String AD_NETWORK = "chartboost";
     public static final String BACKUP_AD_NETWORK = "none";
 
     public static final String ADMOB_BANNER_ID = "ca-app-pub-3940256099942544/6300978111";
@@ -36,6 +36,9 @@ public class Constant {
     public static final String IRONSOURCE_APP_KEY = "85460dcd";
     public static final String IRONSOURCE_BANNER_ID = "DefaultBanner";
     public static final String IRONSOURCE_INTERSTITIAL_ID = "DefaultInterstitial";
+
+    public static final String chartboost_app_id = "638ac080cbf8488eb5ea0acc";
+    public static final String chartboost_signature = "600190942ce69cd676ef88d7c61e6604d948b224";
 
     public static final String STYLE_NEWS = "news";
     public static final String STYLE_RADIO = "radio";
