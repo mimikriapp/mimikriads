@@ -13,12 +13,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 
-import com.applovin.mediation.MaxAd;
-import com.applovin.mediation.MaxError;
-import com.applovin.mediation.nativeAds.MaxNativeAdListener;
-import com.applovin.mediation.nativeAds.MaxNativeAdLoader;
-import com.applovin.mediation.nativeAds.MaxNativeAdView;
-import com.applovin.mediation.nativeAds.MaxNativeAdViewBinder;
 import com.facebook.ads.AdError;
 import com.facebook.ads.AdOptionsView;
 import com.facebook.ads.NativeAdLayout;
@@ -58,8 +52,7 @@ public class NativeAd {
         LinearLayout startappNativeBackground;
 
         FrameLayout applovinNativeAd;
-        MaxNativeAdLoader nativeAdLoader;
-        MaxAd maxAd;
+
 
         private String adStatus = "";
         private String adNetwork = "";
@@ -322,54 +315,6 @@ public class NativeAd {
                             Log.d(TAG, "StartApp Native Ad has been loaded");
                         }
                         break;
-
-                    case Constant.APPLOVIN:
-                    case Constant.APPLOVIN_MAX:
-                    case Constant.FAN_BIDDING_APPLOVIN_MAX:
-                        if (applovinNativeAd.getVisibility() != View.VISIBLE) {
-                            nativeAdLoader = new MaxNativeAdLoader(appLovinNativeId, activity);
-                            nativeAdLoader.setNativeAdListener(new MaxNativeAdListener() {
-                                @Override
-                                public void onNativeAdLoaded(final MaxNativeAdView nativeAdView, final MaxAd ad) {
-                                    // Clean up any pre-existing native ad to prevent memory leaks.
-                                    if (maxAd != null) {
-                                        nativeAdLoader.destroy(maxAd);
-                                    }
-
-                                    // Save ad for cleanup.
-                                    maxAd = ad;
-
-                                    // Add ad view to view.
-                                    applovinNativeAd.removeAllViews();
-                                    applovinNativeAd.addView(nativeAdView);
-                                    applovinNativeAd.setVisibility(View.VISIBLE);
-                                    nativeAdViewContainer.setVisibility(View.VISIBLE);
-
-                                    Log.d(TAG, "Max Native Ad loaded successfully");
-                                }
-
-                                @Override
-                                public void onNativeAdLoadFailed(final String adUnitId, final MaxError error) {
-                                    // We recommend retrying with exponentially higher delays up to a maximum delay
-                                    loadBackupNativeAd();
-                                    Log.d(TAG, "failed to load Max Native Ad with message : " + error.getMessage() + " and error code : " + error.getCode());
-                                }
-
-                                @Override
-                                public void onNativeAdClicked(final MaxAd ad) {
-                                    // Optional click callback
-                                }
-                            });
-                            if (darkTheme) {
-                                nativeAdLoader.loadAd(createNativeAdViewDark());
-                            } else {
-                                nativeAdLoader.loadAd(createNativeAdView());
-                            }
-                        } else {
-                            Log.d(TAG, "AppLovin Native Ad has been loaded");
-                        }
-                        break;
-
                     case Constant.UNITY:
                         //do nothing
                         break;
@@ -559,50 +504,6 @@ public class NativeAd {
                         }
                         break;
 
-                    case Constant.APPLOVIN:
-                    case Constant.APPLOVIN_MAX:
-                    case Constant.FAN_BIDDING_APPLOVIN_MAX:
-                        if (applovinNativeAd.getVisibility() != View.VISIBLE) {
-                            nativeAdLoader = new MaxNativeAdLoader(appLovinNativeId, activity);
-                            nativeAdLoader.setNativeAdListener(new MaxNativeAdListener() {
-                                @Override
-                                public void onNativeAdLoaded(final MaxNativeAdView nativeAdView, final MaxAd ad) {
-                                    // Clean up any pre-existing native ad to prevent memory leaks.
-                                    if (maxAd != null) {
-                                        nativeAdLoader.destroy(maxAd);
-                                    }
-
-                                    // Save ad for cleanup.
-                                    maxAd = ad;
-
-                                    // Add ad view to view.
-                                    applovinNativeAd.removeAllViews();
-                                    applovinNativeAd.addView(nativeAdView);
-                                    applovinNativeAd.setVisibility(View.VISIBLE);
-                                    nativeAdViewContainer.setVisibility(View.VISIBLE);
-                                }
-
-                                @Override
-                                public void onNativeAdLoadFailed(final String adUnitId, final MaxError error) {
-                                    // We recommend retrying with exponentially higher delays up to a maximum delay
-                                }
-
-                                @Override
-                                public void onNativeAdClicked(final MaxAd ad) {
-                                    // Optional click callback
-                                }
-                            });
-                            if (darkTheme) {
-                                nativeAdLoader.loadAd(createNativeAdViewDark());
-                            } else {
-                                nativeAdLoader.loadAd(createNativeAdView());
-                            }
-                        } else {
-                            Log.d(TAG, "AppLovin Native Ad has been loaded");
-                        }
-                        break;
-
-                    case Constant.UNITY:
 
                     case Constant.NONE:
                         nativeAdViewContainer.setVisibility(View.GONE);
@@ -618,130 +519,7 @@ public class NativeAd {
             nativeAdViewContainer.setPadding(left, top, right, bottom);
         }
 
-        public MaxNativeAdView createNativeAdView() {
-            MaxNativeAdViewBinder binder;
-            switch (nativeAdStyle) {
-                case Constant.STYLE_NEWS:
-                    binder = new MaxNativeAdViewBinder.Builder(R.layout.gnt_applovin_news_template_view)
-                            .setTitleTextViewId(R.id.title_text_view)
-                            .setBodyTextViewId(R.id.body_text_view)
-                            .setAdvertiserTextViewId(R.id.advertiser_textView)
-                            .setIconImageViewId(R.id.icon_image_view)
-                            .setMediaContentViewGroupId(R.id.media_view_container)
-                            .setOptionsContentViewGroupId(R.id.ad_options_view)
-                            .setCallToActionButtonId(R.id.cta_button)
-                            .build();
-                    break;
-                case Constant.STYLE_RADIO:
-                    binder = new MaxNativeAdViewBinder.Builder(R.layout.gnt_applovin_radio_template_view)
-                            .setTitleTextViewId(R.id.title_text_view)
-                            .setBodyTextViewId(R.id.body_text_view)
-                            .setAdvertiserTextViewId(R.id.advertiser_textView)
-                            .setIconImageViewId(R.id.icon_image_view)
-                            .setMediaContentViewGroupId(R.id.media_view_container)
-                            .setOptionsContentViewGroupId(R.id.ad_options_view)
-                            .setCallToActionButtonId(R.id.cta_button)
-                            .build();
-                    break;
-                case Constant.STYLE_VIDEO_LARGE:
-                    binder = new MaxNativeAdViewBinder.Builder(R.layout.gnt_applovin_video_large_template_view)
-                            .setTitleTextViewId(R.id.title_text_view)
-                            .setBodyTextViewId(R.id.body_text_view)
-                            .setAdvertiserTextViewId(R.id.advertiser_textView)
-                            .setIconImageViewId(R.id.icon_image_view)
-                            .setMediaContentViewGroupId(R.id.media_view_container)
-                            .setOptionsContentViewGroupId(R.id.ad_options_view)
-                            .setCallToActionButtonId(R.id.cta_button)
-                            .build();
-                    break;
-                case Constant.STYLE_VIDEO_SMALL:
-                    binder = new MaxNativeAdViewBinder.Builder(R.layout.gnt_applovin_video_small_template_view)
-                            .setTitleTextViewId(R.id.title_text_view)
-                            .setBodyTextViewId(R.id.body_text_view)
-                            .setAdvertiserTextViewId(R.id.advertiser_textView)
-                            .setIconImageViewId(R.id.icon_image_view)
-                            .setMediaContentViewGroupId(R.id.media_view_container)
-                            .setOptionsContentViewGroupId(R.id.ad_options_view)
-                            .setCallToActionButtonId(R.id.cta_button)
-                            .build();
-                    break;
-                default:
-                    binder = new MaxNativeAdViewBinder.Builder(R.layout.gnt_applovin_medium_template_view)
-                            .setTitleTextViewId(R.id.title_text_view)
-                            .setBodyTextViewId(R.id.body_text_view)
-                            .setAdvertiserTextViewId(R.id.advertiser_textView)
-                            .setIconImageViewId(R.id.icon_image_view)
-                            .setMediaContentViewGroupId(R.id.media_view_container)
-                            .setOptionsContentViewGroupId(R.id.ad_options_view)
-                            .setCallToActionButtonId(R.id.cta_button)
-                            .build();
-                    break;
-            }
-            return new MaxNativeAdView(binder, activity);
 
-        }
-
-        public MaxNativeAdView createNativeAdViewDark() {
-            MaxNativeAdViewBinder binder;
-            switch (nativeAdStyle) {
-                case Constant.STYLE_NEWS:
-                    binder = new MaxNativeAdViewBinder.Builder(R.layout.gnt_applovin_dark_news_template_view)
-                            .setTitleTextViewId(R.id.title_text_view)
-                            .setBodyTextViewId(R.id.body_text_view)
-                            .setAdvertiserTextViewId(R.id.advertiser_textView)
-                            .setIconImageViewId(R.id.icon_image_view)
-                            .setMediaContentViewGroupId(R.id.media_view_container)
-                            .setOptionsContentViewGroupId(R.id.ad_options_view)
-                            .setCallToActionButtonId(R.id.cta_button)
-                            .build();
-                    break;
-                case Constant.STYLE_RADIO:
-                    binder = new MaxNativeAdViewBinder.Builder(R.layout.gnt_applovin_dark_radio_template_view)
-                            .setTitleTextViewId(R.id.title_text_view)
-                            .setBodyTextViewId(R.id.body_text_view)
-                            .setAdvertiserTextViewId(R.id.advertiser_textView)
-                            .setIconImageViewId(R.id.icon_image_view)
-                            .setMediaContentViewGroupId(R.id.media_view_container)
-                            .setOptionsContentViewGroupId(R.id.ad_options_view)
-                            .setCallToActionButtonId(R.id.cta_button)
-                            .build();
-                    break;
-                case Constant.STYLE_VIDEO_LARGE:
-                    binder = new MaxNativeAdViewBinder.Builder(R.layout.gnt_applovin_dark_video_large_template_view)
-                            .setTitleTextViewId(R.id.title_text_view)
-                            .setBodyTextViewId(R.id.body_text_view)
-                            .setAdvertiserTextViewId(R.id.advertiser_textView)
-                            .setIconImageViewId(R.id.icon_image_view)
-                            .setMediaContentViewGroupId(R.id.media_view_container)
-                            .setOptionsContentViewGroupId(R.id.ad_options_view)
-                            .setCallToActionButtonId(R.id.cta_button)
-                            .build();
-                    break;
-                case Constant.STYLE_VIDEO_SMALL:
-                    binder = new MaxNativeAdViewBinder.Builder(R.layout.gnt_applovin_dark_video_small_template_view)
-                            .setTitleTextViewId(R.id.title_text_view)
-                            .setBodyTextViewId(R.id.body_text_view)
-                            .setAdvertiserTextViewId(R.id.advertiser_textView)
-                            .setIconImageViewId(R.id.icon_image_view)
-                            .setMediaContentViewGroupId(R.id.media_view_container)
-                            .setOptionsContentViewGroupId(R.id.ad_options_view)
-                            .setCallToActionButtonId(R.id.cta_button)
-                            .build();
-                    break;
-                default:
-                    binder = new MaxNativeAdViewBinder.Builder(R.layout.gnt_applovin_dark_medium_template_view)
-                            .setTitleTextViewId(R.id.title_text_view)
-                            .setBodyTextViewId(R.id.body_text_view)
-                            .setAdvertiserTextViewId(R.id.advertiser_textView)
-                            .setIconImageViewId(R.id.icon_image_view)
-                            .setMediaContentViewGroupId(R.id.media_view_container)
-                            .setOptionsContentViewGroupId(R.id.ad_options_view)
-                            .setCallToActionButtonId(R.id.cta_button)
-                            .build();
-                    break;
-            }
-            return new MaxNativeAdView(binder, activity);
-        }
 
     }
 

@@ -8,16 +8,7 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 
-import com.applovin.adview.AppLovinAdView;
-import com.applovin.mediation.MaxAd;
-import com.applovin.mediation.MaxAdViewAdListener;
-import com.applovin.mediation.MaxError;
-import com.applovin.mediation.ads.MaxAdView;
-import com.applovin.sdk.AppLovinAd;
-import com.applovin.sdk.AppLovinAdLoadListener;
-import com.applovin.sdk.AppLovinAdSize;
-import com.applovin.sdk.AppLovinSdkUtils;
-import com.chartboost.sdk.Chartboost;
+
 import com.chartboost.sdk.callbacks.BannerCallback;
 import com.chartboost.sdk.events.CacheError;
 import com.chartboost.sdk.events.CacheEvent;
@@ -52,7 +43,7 @@ public class BannerAd {
         private final Activity activity;
 
         private com.facebook.ads.AdView fanAdView;
-        private AppLovinAdView appLovinAdView;
+
         FrameLayout ironSourceBannerView;
         private IronSourceBannerLayout ironSourceBannerLayout;
         private com.chartboost.sdk.ads.Banner chartboostBanner = null;
@@ -243,99 +234,6 @@ public class BannerAd {
 //                        Log.d(TAG, adNetwork + " Banner Ad unit Id : " + unityBannerId);
                         break;
 
-                    case Constant.APPLOVIN:
-                    case Constant.APPLOVIN_MAX:
-                    case Constant.FAN_BIDDING_APPLOVIN_MAX:
-                        RelativeLayout appLovinAdView = activity.findViewById(R.id.applovin_banner_view_container);
-                        MaxAdView maxAdView = new MaxAdView(appLovinBannerId, activity);
-                        maxAdView.setListener(new MaxAdViewAdListener() {
-                            @Override
-                            public void onAdExpanded(MaxAd ad) {
-
-                            }
-
-                            @Override
-                            public void onAdCollapsed(MaxAd ad) {
-
-                            }
-
-                            @Override
-                            public void onAdLoaded(MaxAd ad) {
-                                appLovinAdView.setVisibility(View.VISIBLE);
-                            }
-
-                            @Override
-                            public void onAdDisplayed(MaxAd ad) {
-
-                            }
-
-                            @Override
-                            public void onAdHidden(MaxAd ad) {
-
-                            }
-
-                            @Override
-                            public void onAdClicked(MaxAd ad) {
-
-                            }
-
-                            @Override
-                            public void onAdLoadFailed(String adUnitId, MaxError error) {
-                                appLovinAdView.setVisibility(View.GONE);
-                                loadBackupBannerAd();
-                            }
-
-                            @Override
-                            public void onAdDisplayFailed(MaxAd ad, MaxError error) {
-
-                            }
-                        });
-
-                        int width = ViewGroup.LayoutParams.MATCH_PARENT;
-                        int heightPx = activity.getResources().getDimensionPixelSize(R.dimen.applovin_banner_height);
-                        maxAdView.setLayoutParams(new FrameLayout.LayoutParams(width, heightPx));
-                        if (darkTheme) {
-                            maxAdView.setBackgroundColor(activity.getResources().getColor(R.color.colorBackgroundDark));
-                        } else {
-                            maxAdView.setBackgroundColor(activity.getResources().getColor(R.color.colorBackgroundLight));
-                        }
-                        appLovinAdView.addView(maxAdView);
-                        maxAdView.loadAd();
-                        Log.d(TAG, adNetwork + " Banner Ad unit Id : " + appLovinBannerId);
-                        break;
-
-                    case Constant.APPLOVIN_DISCOVERY:
-                        RelativeLayout appLovinDiscoveryAdView = activity.findViewById(R.id.applovin_discovery_banner_view_container);
-                        //AdRequest.Builder builder = new AdRequest.Builder();
-                        Bundle bannerExtras = new Bundle();
-                        bannerExtras.putString("zone_id", appLovinBannerZoneId);
-                       // builder.addCustomEventExtrasBundle(AppLovinCustomEventBanner.class, bannerExtras);
-
-                        boolean isTablet2 = AppLovinSdkUtils.isTablet(activity);
-                        AppLovinAdSize adSize = isTablet2 ? AppLovinAdSize.LEADER : AppLovinAdSize.BANNER;
-                        this.appLovinAdView = new AppLovinAdView(adSize, activity);
-                        this.appLovinAdView.setAdLoadListener(new AppLovinAdLoadListener() {
-                            @Override
-                            public void adReceived(AppLovinAd ad) {
-                                appLovinDiscoveryAdView.setVisibility(View.VISIBLE);
-                            }
-
-                            @Override
-                            public void failedToReceiveAd(int errorCode) {
-                                appLovinDiscoveryAdView.setVisibility(View.GONE);
-                                loadBackupBannerAd();
-                            }
-                        });
-                        appLovinDiscoveryAdView.addView(this.appLovinAdView);
-                        this.appLovinAdView.loadNextAd();
-                        break;
-
-                    case Constant.MOPUB:
-                        //Mopub has been acquired by AppLovin
-                        break;
-
-                    case Constant.IRONSOURCE:
-
                     case Constant.CHARTBOOST:
                         RelativeLayout chartboostAdView = activity.findViewById(R.id.chartboost_banner_view_container);
                         chartboostBanner = new com.chartboost.sdk.ads.Banner(activity, "start", com.chartboost.sdk.ads.Banner.BannerSize.STANDARD, new BannerCallback() {
@@ -383,7 +281,7 @@ public class BannerAd {
                      //if(chartboostBanner != null) {chartboostBanner.cache(); }
                      //if(chartboostBanner != null) { chartboostBanner.show();}
                         break;
-                    case Constant.FAN_BIDDING_IRONSOURCE:
+                    case Constant.IRONSOURCE:
                         ironSourceBannerView = activity.findViewById(R.id.ironsource_banner_view_container);
                         ISBannerSize size = ISBannerSize.BANNER;
                         ironSourceBannerLayout = IronSource.createBanner(activity, size);
@@ -529,94 +427,7 @@ public class BannerAd {
 //                        Log.d(TAG, adNetwork + " Banner Ad unit Id : " + unityBannerId);
                         break;
 
-                    case Constant.APPLOVIN:
-                    case Constant.APPLOVIN_MAX:
-                    case Constant.FAN_BIDDING_APPLOVIN_MAX:
-                        RelativeLayout appLovinAdView = activity.findViewById(R.id.applovin_banner_view_container);
-                        MaxAdView maxAdView = new MaxAdView(appLovinBannerId, activity);
-                        maxAdView.setListener(new MaxAdViewAdListener() {
-                            @Override
-                            public void onAdExpanded(MaxAd ad) {
-
-                            }
-
-                            @Override
-                            public void onAdCollapsed(MaxAd ad) {
-
-                            }
-
-                            @Override
-                            public void onAdLoaded(MaxAd ad) {
-                                appLovinAdView.setVisibility(View.VISIBLE);
-                            }
-
-                            @Override
-                            public void onAdDisplayed(MaxAd ad) {
-
-                            }
-
-                            @Override
-                            public void onAdHidden(MaxAd ad) {
-
-                            }
-
-                            @Override
-                            public void onAdClicked(MaxAd ad) {
-
-                            }
-
-                            @Override
-                            public void onAdLoadFailed(String adUnitId, MaxError error) {
-                                appLovinAdView.setVisibility(View.GONE);
-                            }
-
-                            @Override
-                            public void onAdDisplayFailed(MaxAd ad, MaxError error) {
-
-                            }
-                        });
-
-                        int width = ViewGroup.LayoutParams.MATCH_PARENT;
-                        int heightPx = activity.getResources().getDimensionPixelSize(R.dimen.applovin_banner_height);
-                        maxAdView.setLayoutParams(new FrameLayout.LayoutParams(width, heightPx));
-                        if (darkTheme) {
-                            maxAdView.setBackgroundColor(activity.getResources().getColor(R.color.colorBackgroundDark));
-                        } else {
-                            maxAdView.setBackgroundColor(activity.getResources().getColor(R.color.colorBackgroundLight));
-                        }
-                        appLovinAdView.addView(maxAdView);
-                        maxAdView.loadAd();
-                        Log.d(TAG, adNetwork + " Banner Ad unit Id : " + appLovinBannerId);
-                        break;
-
-                    case Constant.APPLOVIN_DISCOVERY:
-                        RelativeLayout appLovinDiscoveryAdView = activity.findViewById(R.id.applovin_discovery_banner_view_container);
-                        //AdRequest.Builder builder = new AdRequest.Builder();
-                        Bundle bannerExtras = new Bundle();
-                        bannerExtras.putString("zone_id", appLovinBannerZoneId);
-                       // builder.addCustomEventExtrasBundle(AppLovinCustomEventBanner.class, bannerExtras);
-
-                        boolean isTablet2 = AppLovinSdkUtils.isTablet(activity);
-                        AppLovinAdSize adSize = isTablet2 ? AppLovinAdSize.LEADER : AppLovinAdSize.BANNER;
-                        this.appLovinAdView = new AppLovinAdView(adSize, activity);
-                        this.appLovinAdView.setAdLoadListener(new AppLovinAdLoadListener() {
-                            @Override
-                            public void adReceived(AppLovinAd ad) {
-                                appLovinDiscoveryAdView.setVisibility(View.VISIBLE);
-                            }
-
-                            @Override
-                            public void failedToReceiveAd(int errorCode) {
-                                appLovinDiscoveryAdView.setVisibility(View.GONE);
-                            }
-                        });
-                        appLovinDiscoveryAdView.addView(this.appLovinAdView);
-                        this.appLovinAdView.loadNextAd();
-                        break;
-
-                    case Constant.IRONSOURCE:
-
-                    case Constant.CHARTBOOST:
+                        case Constant.CHARTBOOST:
                         RelativeLayout chartboostAdView = activity.findViewById(R.id.chartboost_banner_view_container);
                         chartboostBanner = new com.chartboost.sdk.ads.Banner(activity, "start", com.chartboost.sdk.ads.Banner.BannerSize.STANDARD, new BannerCallback() {
                             @Override
@@ -663,7 +474,7 @@ public class BannerAd {
                         //if(chartboostBanner != null) {chartboostBanner.cache(); }
                         //if(chartboostBanner != null) { chartboostBanner.show();}
                         break;
-                    case Constant.FAN_BIDDING_IRONSOURCE:
+                    case Constant.IRONSOURCE:
                         ironSourceBannerView = activity.findViewById(R.id.ironsource_banner_view_container);
                         ISBannerSize size = ISBannerSize.BANNER;
                         ironSourceBannerLayout = IronSource.createBanner(activity, size);

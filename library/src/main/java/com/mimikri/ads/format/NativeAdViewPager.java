@@ -14,12 +14,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 
-import com.applovin.mediation.MaxAd;
-import com.applovin.mediation.MaxError;
-import com.applovin.mediation.nativeAds.MaxNativeAdListener;
-import com.applovin.mediation.nativeAds.MaxNativeAdLoader;
-import com.applovin.mediation.nativeAds.MaxNativeAdView;
-import com.applovin.mediation.nativeAds.MaxNativeAdViewBinder;
 import com.facebook.ads.AdError;
 import com.facebook.ads.AdOptionsView;
 import com.facebook.ads.NativeAdLayout;
@@ -58,8 +52,6 @@ public class NativeAdViewPager {
         LinearLayout startappNativeBackground;
 
         FrameLayout applovinNativeAd;
-        MaxNativeAdLoader nativeAdLoader;
-        MaxAd nativeAd;
 
         ProgressBar progressBarAd;
 
@@ -305,47 +297,6 @@ public class NativeAdViewPager {
                     case Constant.APPLOVIN:
                     case Constant.APPLOVIN_MAX:
                     case Constant.FAN_BIDDING_APPLOVIN_MAX:
-                        if (applovinNativeAd.getVisibility() != View.VISIBLE) {
-                            nativeAdLoader = new MaxNativeAdLoader(appLovinNativeId, activity);
-                            nativeAdLoader.setNativeAdListener(new MaxNativeAdListener() {
-                                @Override
-                                public void onNativeAdLoaded(final MaxNativeAdView nativeAdView, final MaxAd ad) {
-                                    // Clean up any pre-existing native ad to prevent memory leaks.
-                                    if (nativeAd != null) {
-                                        nativeAdLoader.destroy(nativeAd);
-                                    }
-
-                                    // Save ad for cleanup.
-                                    nativeAd = ad;
-
-                                    // Add ad view to view.
-                                    applovinNativeAd.removeAllViews();
-                                    applovinNativeAd.addView(nativeAdView);
-                                    applovinNativeAd.setVisibility(View.VISIBLE);
-                                    progressBarAd.setVisibility(View.GONE);
-                                }
-
-                                @Override
-                                public void onNativeAdLoadFailed(final String adUnitId, final MaxError error) {
-                                    // We recommend retrying with exponentially higher delays up to a maximum delay
-                                    loadBackupNativeAd();
-                                }
-
-                                @Override
-                                public void onNativeAdClicked(final MaxAd ad) {
-                                    // Optional click callback
-                                }
-                            });
-                            if (darkTheme) {
-                                nativeAdLoader.loadAd(createNativeAdViewDark());
-                            } else {
-                                nativeAdLoader.loadAd(createNativeAdView());
-                            }
-                        } else {
-                            Log.d(TAG, "AppLovin Native Ad has been loaded");
-                            progressBarAd.setVisibility(View.GONE);
-                        }
-                        break;
 
                     case Constant.UNITY:
                         //do nothing
@@ -528,84 +479,12 @@ public class NativeAdViewPager {
                     case Constant.APPLOVIN:
                     case Constant.APPLOVIN_MAX:
                     case Constant.FAN_BIDDING_APPLOVIN_MAX:
-                        if (applovinNativeAd.getVisibility() != View.VISIBLE) {
-                            nativeAdLoader = new MaxNativeAdLoader(appLovinNativeId, activity);
-                            nativeAdLoader.setNativeAdListener(new MaxNativeAdListener() {
-                                @Override
-                                public void onNativeAdLoaded(final MaxNativeAdView nativeAdView, final MaxAd ad) {
-                                    // Clean up any pre-existing native ad to prevent memory leaks.
-                                    if (nativeAd != null) {
-                                        nativeAdLoader.destroy(nativeAd);
-                                    }
-
-                                    // Save ad for cleanup.
-                                    nativeAd = ad;
-
-                                    // Add ad view to view.
-                                    applovinNativeAd.removeAllViews();
-                                    applovinNativeAd.addView(nativeAdView);
-                                    applovinNativeAd.setVisibility(View.VISIBLE);
-                                    progressBarAd.setVisibility(View.GONE);
-                                }
-
-                                @Override
-                                public void onNativeAdLoadFailed(final String adUnitId, final MaxError error) {
-                                    // We recommend retrying with exponentially higher delays up to a maximum delay
-                                }
-
-                                @Override
-                                public void onNativeAdClicked(final MaxAd ad) {
-                                    // Optional click callback
-                                }
-                            });
-                            if (darkTheme) {
-                                nativeAdLoader.loadAd(createNativeAdViewDark());
-                            } else {
-                                nativeAdLoader.loadAd(createNativeAdView());
-                            }
-                        } else {
-                            Log.d(TAG, "AppLovin Native Ad has been loaded");
-                            progressBarAd.setVisibility(View.GONE);
-                        }
-                        break;
-
-                    case Constant.UNITY:
-
-                    case Constant.NONE:
-                        //do nothing
-                        break;
-
                 }
 
             }
 
         }
 
-        public MaxNativeAdView createNativeAdView() {
-            MaxNativeAdViewBinder binder = new MaxNativeAdViewBinder.Builder(R.layout.gnt_applovin_large_template_view)
-                    .setTitleTextViewId(R.id.title_text_view)
-                    .setBodyTextViewId(R.id.body_text_view)
-                    .setAdvertiserTextViewId(R.id.advertiser_textView)
-                    .setIconImageViewId(R.id.icon_image_view)
-                    .setMediaContentViewGroupId(R.id.media_view_container)
-                    .setOptionsContentViewGroupId(R.id.ad_options_view)
-                    .setCallToActionButtonId(R.id.cta_button)
-                    .build();
-            return new MaxNativeAdView(binder, activity);
-        }
-
-        public MaxNativeAdView createNativeAdViewDark() {
-            MaxNativeAdViewBinder binder = new MaxNativeAdViewBinder.Builder(R.layout.gnt_applovin_dark_large_template_view)
-                    .setTitleTextViewId(R.id.title_text_view)
-                    .setBodyTextViewId(R.id.body_text_view)
-                    .setAdvertiserTextViewId(R.id.advertiser_textView)
-                    .setIconImageViewId(R.id.icon_image_view)
-                    .setMediaContentViewGroupId(R.id.media_view_container)
-                    .setOptionsContentViewGroupId(R.id.ad_options_view)
-                    .setCallToActionButtonId(R.id.cta_button)
-                    .build();
-            return new MaxNativeAdView(binder, activity);
-        }
 
     }
 

@@ -7,8 +7,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 
-import com.applovin.sdk.AppLovinMediationProvider;
-import com.applovin.sdk.AppLovinSdk;
+//import com.applovin.sdk.AppLovinMediationProvider;
+//import com.applovin.sdk.AppLovinSdk;
 import com.chartboost.sdk.Chartboost;
 import com.chartboost.sdk.privacy.model.CCPA;
 import com.chartboost.sdk.privacy.model.GDPR;
@@ -113,22 +113,6 @@ public class AdNetwork {
         public void initAds() {
             if (adStatus.equals(Constant.AD_STATUS_ON)) {
                 switch (adNetwork) {
-                    case Constant.ADMOB:
-                   // case GOOGLE_AD_MANAGER:
-                    case Constant.FAN_BIDDING_ADMOB:
-                    /*case FAN_BIDDING_AD_MANAGER:
-                        MobileAds.initialize(activity, initializationStatus -> {
-                            Map<String, AdapterStatus> statusMap = initializationStatus.getAdapterStatusMap();
-                            for (String adapterClass : statusMap.keySet()) {
-                                AdapterStatus adapterStatus = statusMap.get(adapterClass);
-                                assert adapterStatus != null;
-                                Log.d(TAG, String.format("Adapter name: %s, Description: %s, Latency: %d", adapterClass, adapterStatus.getDescription(), adapterStatus.getLatency()));
-                            }
-                        });
-                        AudienceNetworkInitializeHelper.initializeAd(activity, debug);
-                        break;
-
-                     */
                     case Constant.FAN:
                         AudienceNetworkInitializeHelper.initializeAd(activity, debug);
                         break;
@@ -161,19 +145,6 @@ public class AdNetwork {
 //                                }).build();
 //                        UnityMediation.initialize(configuration);
                         break;
-                    case Constant.APPLOVIN:
-                    case Constant.APPLOVIN_MAX:
-                    case Constant.FAN_BIDDING_APPLOVIN_MAX:
-                        AppLovinSdk.getInstance(activity).setMediationProvider(AppLovinMediationProvider.MAX);
-                        AppLovinSdk.getInstance(activity).initializeSdk(config -> {
-                        });
-                        AudienceNetworkInitializeHelper.initialize(activity);
-                        break;
-
-                    case Constant.APPLOVIN_DISCOVERY:
-                        AppLovinSdk.initializeSdk(activity);
-                        break;
-                    case Constant.IRONSOURCE:
                     case Constant.CHARTBOOST:
                         // Needs to be set before SDK init
                         Chartboost.addDataUseConsent(activity, new GDPR(GDPR.GDPR_CONSENT.BEHAVIORAL));
@@ -188,7 +159,7 @@ public class AdNetwork {
                         });
                         Chartboost.getDataUseConsent(activity, GDPR.GDPR_STANDARD);
                         break;
-                    case Constant.FAN_BIDDING_IRONSOURCE:
+                    case Constant.IRONSOURCE:
                         String advertisingId = IronSource.getAdvertiserId(activity);
                         IronSource.setUserId(advertisingId);
                         IronSource.init(activity, ironSourceAppKey);
@@ -201,22 +172,6 @@ public class AdNetwork {
         public void initBackupAds() {
             if (adStatus.equals(Constant.AD_STATUS_ON)) {
                 switch (backupAdNetwork) {
-                    case Constant.ADMOB:
-                    //case GOOGLE_AD_MANAGER:
-                   // case FAN_BIDDING_ADMOB:
-                  /*  case FAN_BIDDING_AD_MANAGER:
-                        MobileAds.initialize(activity, initializationStatus -> {
-                            Map<String, AdapterStatus> statusMap = initializationStatus.getAdapterStatusMap();
-                            for (String adapterClass : statusMap.keySet()) {
-                                AdapterStatus adapterStatus = statusMap.get(adapterClass);
-                                assert adapterStatus != null;
-                                Log.d(TAG, String.format("Adapter name: %s, Description: %s, Latency: %d", adapterClass, adapterStatus.getDescription(), adapterStatus.getLatency()));
-                            }
-                        });
-                        AudienceNetworkInitializeHelper.initialize(activity);
-                        break;
-
-                   */
                     case Constant.STARTAPP:
                         StartAppSDK.init(activity, startappAppId, false);
                         StartAppSDK.setTestAdsEnabled(debug);
@@ -239,19 +194,7 @@ public class AdNetwork {
 //                                }).build();
 //                        UnityMediation.initialize(configuration);
                         break;
-                    case Constant.APPLOVIN:
-                    case Constant.APPLOVIN_MAX:
-                    case Constant.FAN_BIDDING_APPLOVIN_MAX:
-                        AppLovinSdk.getInstance(activity).setMediationProvider(AppLovinMediationProvider.MAX);
-                        AppLovinSdk.getInstance(activity).initializeSdk(config -> {
-                        });
-                        AudienceNetworkInitializeHelper.initialize(activity);
-                        break;
 
-                    case Constant.APPLOVIN_DISCOVERY:
-                        AppLovinSdk.initializeSdk(activity);
-                        break;
-                    case Constant.IRONSOURCE:
                     case Constant.CHARTBOOST:
                         // Needs to be set before SDK init
                         Chartboost.addDataUseConsent(activity, new GDPR(GDPR.GDPR_CONSENT.BEHAVIORAL));
@@ -265,7 +208,7 @@ public class AdNetwork {
                             }
                         });
                         break;
-                    case Constant.FAN_BIDDING_IRONSOURCE:
+                    case Constant.IRONSOURCE:
                         String advertisingId = IronSource.getAdvertiserId(activity);
                         IronSource.setUserId(advertisingId);
                         IronSource.init(activity, ironSourceAppKey);

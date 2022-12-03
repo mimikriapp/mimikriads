@@ -8,16 +8,6 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.applovin.adview.AppLovinInterstitialAd;
-import com.applovin.adview.AppLovinInterstitialAdDialog;
-import com.applovin.mediation.MaxAd;
-import com.applovin.mediation.MaxAdListener;
-import com.applovin.mediation.MaxError;
-import com.applovin.mediation.ads.MaxInterstitialAd;
-import com.applovin.sdk.AppLovinAd;
-import com.applovin.sdk.AppLovinAdLoadListener;
-import com.applovin.sdk.AppLovinAdSize;
-import com.applovin.sdk.AppLovinSdk;
 import com.chartboost.sdk.ads.Interstitial;
 import com.chartboost.sdk.callbacks.BannerCallback;
 import com.chartboost.sdk.callbacks.InterstitialCallback;
@@ -51,9 +41,7 @@ public class InterstitialAd {
         private com.facebook.ads.InterstitialAd fanInterstitialAd;
         private StartAppAd startAppAd;
         //        private com.unity3d.mediation.InterstitialAd unityInterstitialAd;
-        private MaxInterstitialAd maxInterstitialAd;
-        public AppLovinInterstitialAdDialog appLovinInterstitialAdDialog;
-        public AppLovinAd appLovinAd;
+
         private int retryAttempt;
         private int counter = 1;
 
@@ -231,75 +219,6 @@ public class InterstitialAd {
 //                        unityInterstitialAd.load(unityAdLoadListener);
                         break;
 
-                    case Constant.APPLOVIN:
-                    case Constant.APPLOVIN_MAX:
-                    case Constant.FAN_BIDDING_APPLOVIN_MAX:
-                        maxInterstitialAd = new MaxInterstitialAd(appLovinInterstitialId, activity);
-                        maxInterstitialAd.setListener(new MaxAdListener() {
-                            @Override
-                            public void onAdLoaded(MaxAd ad) {
-                                retryAttempt = 0;
-                                Log.d(TAG, "AppLovin Interstitial Ad loaded...");
-                            }
-
-                            @Override
-                            public void onAdDisplayed(MaxAd ad) {
-                            }
-
-                            @Override
-                            public void onAdHidden(MaxAd ad) {
-                                maxInterstitialAd.loadAd();
-                            }
-
-                            @Override
-                            public void onAdClicked(MaxAd ad) {
-
-                            }
-
-                            @Override
-                            public void onAdLoadFailed(String adUnitId, MaxError error) {
-                                retryAttempt++;
-                                long delayMillis = TimeUnit.SECONDS.toMillis((long) Math.pow(2, Math.min(6, retryAttempt)));
-                                new Handler().postDelayed(() -> maxInterstitialAd.loadAd(), delayMillis);
-                                loadBackupInterstitialAd();
-                                Log.d(TAG, "failed to load AppLovin Interstitial");
-                            }
-
-                            @Override
-                            public void onAdDisplayFailed(MaxAd ad, MaxError error) {
-                                maxInterstitialAd.loadAd();
-                            }
-                        });
-
-                        // Load the first ad
-                        maxInterstitialAd.loadAd();
-                        break;
-
-                    case Constant.APPLOVIN_DISCOVERY:
-                      //  AdRequest.Builder builder = new AdRequest.Builder();
-                        Bundle interstitialExtras = new Bundle();
-                        interstitialExtras.putString("zone_id", appLovinInterstitialZoneId);
-                       // builder.addCustomEventExtrasBundle(AppLovinCustomEventInterstitial.class, interstitialExtras);
-                        AppLovinSdk.getInstance(activity).getAdService().loadNextAd(AppLovinAdSize.INTERSTITIAL, new AppLovinAdLoadListener() {
-                            @Override
-                            public void adReceived(AppLovinAd ad) {
-                                appLovinAd = ad;
-                            }
-
-                            @Override
-                            public void failedToReceiveAd(int errorCode) {
-                                loadBackupInterstitialAd();
-                            }
-                        });
-                        appLovinInterstitialAdDialog = AppLovinInterstitialAd.create(AppLovinSdk.getInstance(activity), activity);
-                        break;
-
-                    case Constant.MOPUB:
-                        //Mopub has been acquired by AppLovin
-                        break;
-
-                    case Constant.IRONSOURCE:
-
                     case Constant.CHARTBOOST:
                         chartboostInterstitial = new Interstitial("start",new InterstitialCallback() {
                             @Override
@@ -341,7 +260,7 @@ public class InterstitialAd {
                         chartboostInterstitial.cache();
                         break;
 
-                    case Constant.FAN_BIDDING_IRONSOURCE:
+                    case Constant.IRONSOURCE:
                         IronSource.setInterstitialListener(new InterstitialListener() {
                             @Override
                             public void onInterstitialAdReady() {
@@ -461,73 +380,7 @@ public class InterstitialAd {
 //                        unityInterstitialAd.load(unityAdLoadListener);
                         break;
 
-                    case Constant.APPLOVIN:
-                    case Constant.APPLOVIN_MAX:
-                    case Constant.FAN_BIDDING_APPLOVIN_MAX:
-                        maxInterstitialAd = new MaxInterstitialAd(appLovinInterstitialId, activity);
-                        maxInterstitialAd.setListener(new MaxAdListener() {
-                            @Override
-                            public void onAdLoaded(MaxAd ad) {
-                                retryAttempt = 0;
-                                Log.d(TAG, "AppLovin Interstitial Ad loaded...");
-                            }
-
-                            @Override
-                            public void onAdDisplayed(MaxAd ad) {
-                            }
-
-                            @Override
-                            public void onAdHidden(MaxAd ad) {
-                                maxInterstitialAd.loadAd();
-                            }
-
-                            @Override
-                            public void onAdClicked(MaxAd ad) {
-
-                            }
-
-                            @Override
-                            public void onAdLoadFailed(String adUnitId, MaxError error) {
-                                retryAttempt++;
-                                long delayMillis = TimeUnit.SECONDS.toMillis((long) Math.pow(2, Math.min(6, retryAttempt)));
-                                new Handler().postDelayed(() -> maxInterstitialAd.loadAd(), delayMillis);
-                                Log.d(TAG, "failed to load AppLovin Interstitial");
-                            }
-
-                            @Override
-                            public void onAdDisplayFailed(MaxAd ad, MaxError error) {
-                                maxInterstitialAd.loadAd();
-                            }
-                        });
-
-                        // Load the first ad
-                        maxInterstitialAd.loadAd();
-                        break;
-
-                    case Constant.APPLOVIN_DISCOVERY:
-                      //  AdRequest.Builder builder = new AdRequest.Builder();
-                        Bundle interstitialExtras = new Bundle();
-                        interstitialExtras.putString("zone_id", appLovinInterstitialZoneId);
-                       // builder.addCustomEventExtrasBundle(AppLovinCustomEventInterstitial.class, interstitialExtras);
-                        AppLovinSdk.getInstance(activity).getAdService().loadNextAd(AppLovinAdSize.INTERSTITIAL, new AppLovinAdLoadListener() {
-                            @Override
-                            public void adReceived(AppLovinAd ad) {
-                                appLovinAd = ad;
-                            }
-
-                            @Override
-                            public void failedToReceiveAd(int errorCode) {
-                            }
-                        });
-                        appLovinInterstitialAdDialog = AppLovinInterstitialAd.create(AppLovinSdk.getInstance(activity), activity);
-                        break;
-
-                    case Constant.MOPUB:
-                        //Mopub has been acquired by AppLovin
-                        break;
-
-                    case Constant.IRONSOURCE:
-                    case Constant.CHARTBOOST:
+                        case Constant.CHARTBOOST:
                         chartboostInterstitial = new Interstitial("start",new InterstitialCallback() {
                             @Override
                             public void onAdLoaded(@NonNull CacheEvent cacheEvent, @Nullable CacheError cacheError) {
@@ -568,7 +421,7 @@ public class InterstitialAd {
                         chartboostInterstitial.cache();
                         break;
 
-                    case Constant.FAN_BIDDING_IRONSOURCE:
+                    case Constant.IRONSOURCE:
                         IronSource.setInterstitialListener(new InterstitialListener() {
                             @Override
                             public void onInterstitialAdReady() {
@@ -666,37 +519,13 @@ public class InterstitialAd {
 //                            unityInterstitialAd.show(showListener);
                             break;
 
-                        case Constant.APPLOVIN:
-                        case Constant.APPLOVIN_MAX:
-                        case Constant.FAN_BIDDING_APPLOVIN_MAX:
-                            if (maxInterstitialAd != null && maxInterstitialAd.isReady()) {
-                                Log.d(TAG, "ready : " + counter);
-                                maxInterstitialAd.showAd();
-                                Log.d(TAG, "show ad");
-                            } else {
-                                showBackupInterstitialAd();
-                            }
-                            break;
-
-                        case Constant.APPLOVIN_DISCOVERY:
-                            if (appLovinInterstitialAdDialog != null) {
-                                appLovinInterstitialAdDialog.showAndRender(appLovinAd);
-                            }
-                            break;
-
-                        case Constant.MOPUB:
-                            //Mopub has been acquired by AppLovin
-                            break;
-
-                        case Constant.IRONSOURCE:
-
                         case Constant.CHARTBOOST:
                             if(chartboostInterstitial != null) {
                                 chartboostInterstitial.show();
                             }
                             break;
 
-                        case Constant.FAN_BIDDING_IRONSOURCE:
+                        case Constant.IRONSOURCE:
                             if (IronSource.isInterstitialReady()) {
                                 IronSource.showInterstitial(ironSourceInterstitialId);
                             } else {
@@ -753,34 +582,13 @@ public class InterstitialAd {
 //                        };
 //                        unityInterstitialAd.show(showListener);
                         break;
-
-                    case Constant.APPLOVIN:
-                    case Constant.APPLOVIN_MAX:
-                    case Constant.FAN_BIDDING_APPLOVIN_MAX:
-                        if (maxInterstitialAd != null && maxInterstitialAd.isReady()) {
-                            maxInterstitialAd.showAd();
-                        }
-                        break;
-
-                    case Constant.APPLOVIN_DISCOVERY:
-                        if (appLovinInterstitialAdDialog != null) {
-                            appLovinInterstitialAdDialog.showAndRender(appLovinAd);
-                        }
-                        break;
-
-                    case Constant.MOPUB:
-                        //Mopub has been acquired by AppLovin
-                        break;
-
-                    case Constant.IRONSOURCE:
-
                     case Constant.CHARTBOOST:
                         if(chartboostInterstitial != null) {
                             chartboostInterstitial.show();
                         }
                         break;
 
-                    case Constant.FAN_BIDDING_IRONSOURCE:
+                    case Constant.IRONSOURCE:
                         if (IronSource.isInterstitialReady()) {
                             IronSource.showInterstitial(ironSourceInterstitialId);
                         }

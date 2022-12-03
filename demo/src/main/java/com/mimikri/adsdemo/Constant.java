@@ -3,7 +3,7 @@ package com.mimikri.adsdemo;
 public class Constant {
 
     public static final String AD_STATUS = "1";
-    public static final String AD_NETWORK = "chartboost";
+    public static final String AD_NETWORK = "startapp";
     public static final String BACKUP_AD_NETWORK = "none";
 
     public static final String ADMOB_BANNER_ID = "ca-app-pub-3940256099942544/6300978111";
