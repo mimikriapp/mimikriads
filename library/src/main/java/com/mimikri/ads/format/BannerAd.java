@@ -9,16 +9,7 @@ import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 
 
-import com.chartboost.sdk.callbacks.BannerCallback;
-import com.chartboost.sdk.events.CacheError;
-import com.chartboost.sdk.events.CacheEvent;
-import com.chartboost.sdk.events.ClickError;
-import com.chartboost.sdk.events.ClickEvent;
-import com.chartboost.sdk.events.ImpressionEvent;
-import com.chartboost.sdk.events.ShowError;
-import com.chartboost.sdk.events.ShowEvent;
-import com.chartboost.sdk.privacy.model.CCPA;
-import com.chartboost.sdk.privacy.model.GDPR;
+
 import com.facebook.ads.Ad;
 import com.facebook.ads.AdSize;
 
@@ -46,7 +37,7 @@ public class BannerAd {
 
         FrameLayout ironSourceBannerView;
         private IronSourceBannerLayout ironSourceBannerLayout;
-        private com.chartboost.sdk.ads.Banner chartboostBanner = null;
+
         private String adStatus = "";
         private String adNetwork = "";
         private String backupAdNetwork = "";
@@ -201,89 +192,9 @@ public class BannerAd {
                         });
                         startAppAdView.addView(banner);
                         break;
-
-                    case Constant.UNITY:
-//                        RelativeLayout unityAdView = activity.findViewById(R.id.unity_banner_view_container);
-//                        BannerView bottomBanner = new BannerView(activity, unityBannerId, new UnityBannerSize(UNITY_ADS_BANNER_WIDTH_MEDIUM, UNITY_ADS_BANNER_HEIGHT_MEDIUM));
-//                        bottomBanner.setListener(new BannerView.IListener() {
-//                            @Override
-//                            public void onBannerLoaded(BannerView bannerView) {
-//                                unityAdView.setVisibility(View.VISIBLE);
-//                                Log.d("Unity_banner", "ready");
-//                            }
-//
-//                            @Override
-//                            public void onBannerClick(BannerView bannerView) {
-//
-//                            }
-//
-//                            @Override
-//                            public void onBannerFailedToLoad(BannerView bannerView, BannerErrorInfo bannerErrorInfo) {
-//                                Log.d("SupportTest", "Banner Error" + bannerErrorInfo);
-//                                unityAdView.setVisibility(View.GONE);
-//                                loadBackupBannerAd();
-//                            }
-//
-//                            @Override
-//                            public void onBannerLeftApplication(BannerView bannerView) {
-//
-//                            }
-//                        });
-//                        unityAdView.addView(bottomBanner);
-//                        bottomBanner.load();
-//                        Log.d(TAG, adNetwork + " Banner Ad unit Id : " + unityBannerId);
-                        break;
-
-                    case Constant.CHARTBOOST:
-                        RelativeLayout chartboostAdView = activity.findViewById(R.id.chartboost_banner_view_container);
-                        chartboostBanner = new com.chartboost.sdk.ads.Banner(activity, "start", com.chartboost.sdk.ads.Banner.BannerSize.STANDARD, new BannerCallback() {
-                            @Override
-                            public void onAdLoaded(@NonNull CacheEvent cacheEvent, @Nullable CacheError cacheError) {
-                                if(cacheError != null) {
-                                    //addToUILog("Banner cached error: " + cacheError.getCode().name());
-                                    Log.d(TAG, "Banner cached error: " + cacheError.getCode().name());
-                                    chartboostAdView.setVisibility(View.GONE);
-                                    chartboostBanner.cache();
-                                    loadBackupBannerAd();
-                                } else {
-                                    Log.d(TAG, "onBannerAdLoaded");
-                                    chartboostAdView.setVisibility(View.VISIBLE);
-                                   //if(chartboostBanner != null) { Log.d(TAG, "chartboostBanner_cache");chartboostBanner.cache(); }
-                                   // if(chartboostBanner != null) { chartboostBanner.show();}
-                                    if(chartboostBanner != null) { chartboostBanner.show();}
-
-                                //chartboostBanner.show();
-                                }
-                            }
-                            @Override
-                            public void onAdRequestedToShow(@NonNull ShowEvent showEvent) {Log.d(TAG, "onAdRequestedToShow");}
-                            @Override
-                            public void onAdShown(@NonNull ShowEvent showEvent, @Nullable ShowError showError) {
-                                if(showError != null) {
-                                    //addToUILog("Banner cached error: " + cacheError.getCode().name());
-                                    Log.d(TAG, "Banner showError: " + showError.getCode().name());
-                                   // chartboostAdView.setVisibility(View.GONE);
-                                    chartboostBanner.cache();
-                                    //loadBackupBannerAd();
-                                } else {
-                                    Log.d(TAG, "onAdShown");
-                                   // chartboostAdView.setVisibility(View.VISIBLE);
-                                }
-
-                            }
-                            @Override
-                            public void onAdClicked(@NonNull ClickEvent clickEvent, @Nullable ClickError clickError) { Log.d(TAG, "onAdClicked");}
-                            @Override
-                            public void onImpressionRecorded(@NonNull ImpressionEvent impressionEvent) {Log.d(TAG, "onImpressionRecorded"); } }, null);
-                        chartboostAdView.addView(chartboostBanner);
-                       // chartboostBanner.cache();
-                       chartboostBanner.show();
-                     //if(chartboostBanner != null) {chartboostBanner.cache(); }
-                     //if(chartboostBanner != null) { chartboostBanner.show();}
-                        break;
-                    case Constant.IRONSOURCE:
+                        case Constant.IRONSOURCE:
                         ironSourceBannerView = activity.findViewById(R.id.ironsource_banner_view_container);
-                        ISBannerSize size = ISBannerSize.BANNER;
+                        ISBannerSize size = ISBannerSize.SMART;
                         ironSourceBannerLayout = IronSource.createBanner(activity, size);
                         FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT);
                         ironSourceBannerView.addView(ironSourceBannerLayout, 0, layoutParams);
@@ -396,85 +307,7 @@ public class BannerAd {
                         startAppAdView.addView(banner);
                         break;
 
-                    case Constant.UNITY:
-//                        RelativeLayout unityAdView = activity.findViewById(R.id.unity_banner_view_container);
-//                        BannerView bottomBanner = new BannerView(activity, unityBannerId, new UnityBannerSize(UNITY_ADS_BANNER_WIDTH_MEDIUM, UNITY_ADS_BANNER_HEIGHT_MEDIUM));
-//                        bottomBanner.setListener(new BannerView.IListener() {
-//                            @Override
-//                            public void onBannerLoaded(BannerView bannerView) {
-//                                unityAdView.setVisibility(View.VISIBLE);
-//                                Log.d("Unity_banner", "ready");
-//                            }
-//
-//                            @Override
-//                            public void onBannerClick(BannerView bannerView) {
-//
-//                            }
-//
-//                            @Override
-//                            public void onBannerFailedToLoad(BannerView bannerView, BannerErrorInfo bannerErrorInfo) {
-//                                Log.d("SupportTest", "Banner Error" + bannerErrorInfo);
-//                                unityAdView.setVisibility(View.GONE);
-//                            }
-//
-//                            @Override
-//                            public void onBannerLeftApplication(BannerView bannerView) {
-//
-//                            }
-//                        });
-//                        unityAdView.addView(bottomBanner);
-//                        bottomBanner.load();
-//                        Log.d(TAG, adNetwork + " Banner Ad unit Id : " + unityBannerId);
-                        break;
-
-                        case Constant.CHARTBOOST:
-                        RelativeLayout chartboostAdView = activity.findViewById(R.id.chartboost_banner_view_container);
-                        chartboostBanner = new com.chartboost.sdk.ads.Banner(activity, "start", com.chartboost.sdk.ads.Banner.BannerSize.STANDARD, new BannerCallback() {
-                            @Override
-                            public void onAdLoaded(@NonNull CacheEvent cacheEvent, @Nullable CacheError cacheError) {
-                                if(cacheError != null) {
-                                    //addToUILog("Banner cached error: " + cacheError.getCode().name());
-                                    Log.d(TAG, "Banner cached error: " + cacheError.getCode().name());
-                                    chartboostAdView.setVisibility(View.GONE);
-                                    chartboostBanner.cache();
-                                    loadBackupBannerAd();
-                                } else {
-                                    Log.d(TAG, "onBannerAdLoaded");
-                                    chartboostAdView.setVisibility(View.VISIBLE);
-                                    //if(chartboostBanner != null) { Log.d(TAG, "chartboostBanner_cache");chartboostBanner.cache(); }
-                                    // if(chartboostBanner != null) { chartboostBanner.show();}
-                                    if(chartboostBanner != null) { chartboostBanner.show();}
-
-                                    //chartboostBanner.show();
-                                }
-                            }
-                            @Override
-                            public void onAdRequestedToShow(@NonNull ShowEvent showEvent) {Log.d(TAG, "onAdRequestedToShow");}
-                            @Override
-                            public void onAdShown(@NonNull ShowEvent showEvent, @Nullable ShowError showError) {
-                                if(showError != null) {
-                                    //addToUILog("Banner cached error: " + cacheError.getCode().name());
-                                    Log.d(TAG, "Banner showError: " + showError.getCode().name());
-                                    // chartboostAdView.setVisibility(View.GONE);
-                                    chartboostBanner.cache();
-                                    //loadBackupBannerAd();
-                                } else {
-                                    Log.d(TAG, "onAdShown");
-                                    // chartboostAdView.setVisibility(View.VISIBLE);
-                                }
-
-                            }
-                            @Override
-                            public void onAdClicked(@NonNull ClickEvent clickEvent, @Nullable ClickError clickError) { Log.d(TAG, "onAdClicked");}
-                            @Override
-                            public void onImpressionRecorded(@NonNull ImpressionEvent impressionEvent) {Log.d(TAG, "onImpressionRecorded"); } }, null);
-                        chartboostAdView.addView(chartboostBanner);
-                        // chartboostBanner.cache();
-                        chartboostBanner.show();
-                        //if(chartboostBanner != null) {chartboostBanner.cache(); }
-                        //if(chartboostBanner != null) { chartboostBanner.show();}
-                        break;
-                    case Constant.IRONSOURCE:
+                   case Constant.IRONSOURCE:
                         ironSourceBannerView = activity.findViewById(R.id.ironsource_banner_view_container);
                         ISBannerSize size = ISBannerSize.BANNER;
                         ironSourceBannerLayout = IronSource.createBanner(activity, size);

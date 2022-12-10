@@ -7,11 +7,6 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 
-//import com.applovin.sdk.AppLovinMediationProvider;
-//import com.applovin.sdk.AppLovinSdk;
-import com.chartboost.sdk.Chartboost;
-import com.chartboost.sdk.privacy.model.CCPA;
-import com.chartboost.sdk.privacy.model.GDPR;
 import com.ironsource.mediationsdk.IronSource;
 import com.mimikri.ads.R;
 import com.mimikri.ads.helper.AudienceNetworkInitializeHelper;
@@ -122,43 +117,7 @@ public class AdNetwork {
                         StartAppAd.disableSplash();
                         StartAppSDK.setUserConsent(activity, "pas", System.currentTimeMillis(), true);
                         break;
-                    case Constant.UNITY:
-                        if (debug) {
-                            new AlertDialog.Builder(activity)
-                                    .setTitle("Unity Ads Removal")
-                                    .setMessage(Html.fromHtml(activity.getString(R.string.unity_ads_announcement)))
-                                    .setPositiveButton("DISMISS", null)
-                                    .show();
-                        }
-//                        InitializationConfiguration configuration = InitializationConfiguration.builder()
-//                                .setGameId(unityGameId)
-//                                .setInitializationListener(new IInitializationListener() {
-//                                    @Override
-//                                    public void onInitializationComplete() {
-//                                        Log.d(TAG, "Unity Mediation is successfully initialized. with ID : " + unityGameId);
-//                                    }
-//
-//                                    @Override
-//                                    public void onInitializationFailed(SdkInitializationError errorCode, String msg) {
-//                                        Log.d(TAG, "Unity Mediation Failed to Initialize : " + msg);
-//                                    }
-//                                }).build();
-//                        UnityMediation.initialize(configuration);
-                        break;
-                    case Constant.CHARTBOOST:
-                        // Needs to be set before SDK init
-                        Chartboost.addDataUseConsent(activity, new GDPR(GDPR.GDPR_CONSENT.BEHAVIORAL));
-                        Chartboost.addDataUseConsent(activity, new CCPA(CCPA.CCPA_CONSENT.OPT_IN_SALE));
-                        Chartboost.startWithAppId(activity, chartboost_app_id, chartboost_signature, startError -> {
-                            if (startError == null) {
-                                Log.d(TAG, "CHARTBOOST SDK is initialized");
-                            } else {
-                                Log.d(TAG, "CHARTBOOST SDK initialized with error: "+startError.getCode().name());
-                                Log.d(TAG, "CHARTBOOST SDK "+"app_id="+chartboost_app_id+"_signature="+chartboost_signature);
-                            }
-                        });
-                        Chartboost.getDataUseConsent(activity, GDPR.GDPR_STANDARD);
-                        break;
+
                     case Constant.IRONSOURCE:
                         String advertisingId = IronSource.getAdvertiserId(activity);
                         IronSource.setUserId(advertisingId);
@@ -178,36 +137,7 @@ public class AdNetwork {
                         StartAppAd.disableSplash();
                         StartAppSDK.setUserConsent(activity, "pas", System.currentTimeMillis(), true);
                         break;
-                    case Constant.UNITY:
-//                        InitializationConfiguration configuration = InitializationConfiguration.builder()
-//                                .setGameId(unityGameId)
-//                                .setInitializationListener(new IInitializationListener() {
-//                                    @Override
-//                                    public void onInitializationComplete() {
-//                                        Log.d(TAG, "Unity Mediation is successfully initialized. with ID : " + unityGameId);
-//                                    }
-//
-//                                    @Override
-//                                    public void onInitializationFailed(SdkInitializationError errorCode, String msg) {
-//                                        Log.d(TAG, "Unity Mediation Failed to Initialize : " + msg);
-//                                    }
-//                                }).build();
-//                        UnityMediation.initialize(configuration);
-                        break;
 
-                    case Constant.CHARTBOOST:
-                        // Needs to be set before SDK init
-                        Chartboost.addDataUseConsent(activity, new GDPR(GDPR.GDPR_CONSENT.BEHAVIORAL));
-                        Chartboost.addDataUseConsent(activity, new CCPA(CCPA.CCPA_CONSENT.OPT_IN_SALE));
-                        Chartboost.startWithAppId(activity, chartboost_app_id, chartboost_signature, startError -> {
-                            if (startError == null) {
-                                Log.d(TAG, "CHARTBOOST SDK is initialized");
-
-                            } else {
-                                Log.d(TAG, "CHARTBOOST SDK initialized with error: "+startError.getCode().name());
-                            }
-                        });
-                        break;
                     case Constant.IRONSOURCE:
                         String advertisingId = IronSource.getAdvertiserId(activity);
                         IronSource.setUserId(advertisingId);

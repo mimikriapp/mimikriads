@@ -14,8 +14,6 @@ import com.mimikri.ads.format.InterstitialAd;
 import com.mimikri.ads.format.MediumRectangleAd;
 import com.mimikri.ads.format.NativeAd;
 
-import static com.mimikri.adsdemo.Constant.chartboost_app_id;
-import static com.mimikri.adsdemo.Constant.chartboost_signature;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -56,13 +54,8 @@ public class MainActivity extends AppCompatActivity {
                 .setAdStatus(Constant.AD_STATUS)
                 .setAdNetwork(Constant.AD_NETWORK)
                 .setBackupAdNetwork(Constant.BACKUP_AD_NETWORK)
-                .setAdMobAppId(null)
                 .setStartappAppId(Constant.STARTAPP_APP_ID)
-                .setUnityGameId(Constant.UNITY_GAME_ID)
-                .setAppLovinSdkKey(getResources().getString(R.string.applovin_sdk_key))
                 .setIronSourceAppKey(Constant.IRONSOURCE_APP_KEY)
-                .setChartboost_app_id(chartboost_app_id)
-                .setChartboost_signature(chartboost_signature)
                 .setDebug(BuildConfig.DEBUG)
                 .build();
     }
@@ -72,12 +65,7 @@ public class MainActivity extends AppCompatActivity {
                 .setAdStatus(Constant.AD_STATUS)
                 .setAdNetwork(Constant.AD_NETWORK)
                 .setBackupAdNetwork(Constant.BACKUP_AD_NETWORK)
-                .setAdMobBannerId(Constant.ADMOB_BANNER_ID)
-                .setGoogleAdManagerBannerId(Constant.GOOGLE_AD_MANAGER_BANNER_ID)
                 .setFanBannerId(Constant.FAN_BANNER_ID)
-                .setUnityBannerId(Constant.UNITY_BANNER_ID)
-                .setAppLovinBannerId(Constant.APPLOVIN_BANNER_ID)
-                .setAppLovinBannerZoneId(Constant.APPLOVIN_BANNER_ZONE_ID)
                 .setIronSourceBannerId(Constant.IRONSOURCE_BANNER_ID)
                 .setDarkTheme(false)
                 .build();
@@ -88,12 +76,7 @@ public class MainActivity extends AppCompatActivity {
                 .setAdStatus(Constant.AD_STATUS)
                 .setAdNetwork(Constant.AD_NETWORK)
                 .setBackupAdNetwork(Constant.BACKUP_AD_NETWORK)
-                .setAdMobBannerId(Constant.ADMOB_BANNER_ID)
-                .setGoogleAdManagerBannerId(Constant.GOOGLE_AD_MANAGER_BANNER_ID)
                 .setFanBannerId(Constant.FAN_BANNER_ID)
-                .setUnityBannerId(Constant.UNITY_BANNER_ID)
-                .setAppLovinBannerId(Constant.APPLOVIN_BANNER_ID)
-                .setAppLovinBannerZoneId(Constant.APPLOVIN_BANNER_ZONE_ID)
                 .setIronSourceBannerId(Constant.IRONSOURCE_BANNER_ID)
                 .setDarkTheme(false)
                 .build();
@@ -104,12 +87,7 @@ public class MainActivity extends AppCompatActivity {
                 .setAdStatus(Constant.AD_STATUS)
                 .setAdNetwork(Constant.AD_NETWORK)
                 .setBackupAdNetwork(Constant.BACKUP_AD_NETWORK)
-                .setAdMobInterstitialId(Constant.ADMOB_INTERSTITIAL_ID)
-                .setGoogleAdManagerInterstitialId(Constant.GOOGLE_AD_MANAGER_INTERSTITIAL_ID)
                 .setFanInterstitialId(Constant.FAN_INTERSTITIAL_ID)
-                .setUnityInterstitialId(Constant.UNITY_INTERSTITIAL_ID)
-                .setAppLovinInterstitialId(Constant.APPLOVIN_INTERSTITIAL_ID)
-                .setAppLovinInterstitialZoneId(Constant.APPLOVIN_INTERSTITIAL_ZONE_ID)
                 .setIronSourceInterstitialId(Constant.IRONSOURCE_INTERSTITIAL_ID)
                 .setInterval(1)
                 .build();
@@ -124,10 +102,7 @@ public class MainActivity extends AppCompatActivity {
                 .setAdStatus(Constant.AD_STATUS)
                 .setAdNetwork(Constant.AD_NETWORK)
                 .setBackupAdNetwork(Constant.BACKUP_AD_NETWORK)
-                .setAdMobNativeId(Constant.ADMOB_NATIVE_ID)
-                .setAdManagerNativeId(Constant.GOOGLE_AD_MANAGER_NATIVE_ID)
                 .setFanNativeId(Constant.FAN_NATIVE_ID)
-                .setAppLovinNativeId(Constant.APPLOVIN_NATIVE_MANUAL_ID)
                 .setNativeAdStyle(Constant.STYLE_DEFAULT)
                 .setDarkTheme(false)
                 .build();

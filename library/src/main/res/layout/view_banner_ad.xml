@@ -18,13 +18,6 @@
         android:visibility="gone" />
 
     <RelativeLayout
-        android:id="@+id/unity_banner_view_container"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:visibility="gone" />
-
-    <RelativeLayout
         android:id="@+id/applovin_banner_view_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -44,10 +37,4 @@
         android:layout_height="wrap_content"
         android:visibility="gone" />
 
-    <RelativeLayout
-        android:id="@+id/chartboost_banner_view_container"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:visibility="gone" />
 </LinearLayout>

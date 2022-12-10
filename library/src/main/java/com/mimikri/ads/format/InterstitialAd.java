@@ -8,17 +8,6 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.chartboost.sdk.ads.Interstitial;
-import com.chartboost.sdk.callbacks.BannerCallback;
-import com.chartboost.sdk.callbacks.InterstitialCallback;
-import com.chartboost.sdk.events.CacheError;
-import com.chartboost.sdk.events.CacheEvent;
-import com.chartboost.sdk.events.ClickError;
-import com.chartboost.sdk.events.ClickEvent;
-import com.chartboost.sdk.events.DismissEvent;
-import com.chartboost.sdk.events.ImpressionEvent;
-import com.chartboost.sdk.events.ShowError;
-import com.chartboost.sdk.events.ShowEvent;
 import com.facebook.ads.InterstitialAdListener;
 import com.ironsource.mediationsdk.IronSource;
 import com.ironsource.mediationsdk.logger.IronSourceError;
@@ -37,7 +26,6 @@ public class InterstitialAd {
 
         private static final String TAG = "AdNetwork";
         private final Activity activity;
-        private Interstitial chartboostInterstitial = null;
         private com.facebook.ads.InterstitialAd fanInterstitialAd;
         private StartAppAd startAppAd;
         //        private com.unity3d.mediation.InterstitialAd unityInterstitialAd;
@@ -200,67 +188,7 @@ public class InterstitialAd {
                             }
                         });
                         break;
-
-                    case Constant.UNITY:
-//                        unityInterstitialAd = new com.unity3d.mediation.InterstitialAd(activity, unityInterstitialId);
-//                        final IInterstitialAdLoadListener unityAdLoadListener = new IInterstitialAdLoadListener() {
-//                            @Override
-//                            public void onInterstitialLoaded(com.unity3d.mediation.InterstitialAd interstitialAd) {
-//                                Log.d(TAG, "unity interstitial ad loaded");
-//                            }
-//
-//                            @Override
-//                            public void onInterstitialFailedLoad(com.unity3d.mediation.InterstitialAd interstitialAd, LoadError loadError, String s) {
-//                                Log.e(TAG, "Unity Ads failed to load ad : " + unityInterstitialId + " : error : " + s);
-//                                loadBackupInterstitialAd();
-//                            }
-//
-//                        };
-//                        unityInterstitialAd.load(unityAdLoadListener);
-                        break;
-
-                    case Constant.CHARTBOOST:
-                        chartboostInterstitial = new Interstitial("start",new InterstitialCallback() {
-                            @Override
-                            public void onAdLoaded(@NonNull CacheEvent cacheEvent, @Nullable CacheError cacheError) {
-                                if (cacheError != null) {
-                                    //addToUILog("Interstitial cached error: " + cacheError.getCode().name());
-                                   // incrementCounter(failLoadCounter);
-                                    Log.d(TAG, "  chartboostInterstitial cacheError");
-                                    loadBackupInterstitialAd();
-                                } else {
-                                    //addToUILog("Interstitial cached");
-                                    Log.d(TAG, "  chartboostInterstitial on ad loaded");
-                                   // if(chartboostInterstitial != null) { chartboostInterstitial.cache();}
-                                   // chartboostInterstitial.cache();
-                                }
-                            }
-                            @Override
-                            public void onAdClicked(@NonNull ClickEvent clickEvent, @Nullable ClickError clickError) { }
-                            @Override
-                            public void onAdRequestedToShow(@NonNull ShowEvent showEvent) { }
-
-                            @Override
-                            public void onAdShown(@NonNull ShowEvent showEvent, @Nullable ShowError showError) {
-                                if(showError != null) {
-                                   // loadBackupInterstitialAd();
-                                   // chartboostInterstitial.cache();
-                                }else {
-                                   // chartboostInterstitial.cache();
-                                }
-                            }
-
-                            @Override
-                            public void onImpressionRecorded(@NonNull ImpressionEvent impressionEvent) {}
-
-                            @Override
-                            public void onAdDismiss(@NonNull DismissEvent dismissEvent) { }
-
-                         }, null);
-                        chartboostInterstitial.cache();
-                        break;
-
-                    case Constant.IRONSOURCE:
+                        case Constant.IRONSOURCE:
                         IronSource.setInterstitialListener(new InterstitialListener() {
                             @Override
                             public void onInterstitialAdReady() {
@@ -363,64 +291,6 @@ public class InterstitialAd {
                         Log.d(TAG, "load StartApp as backup Ad");
                         break;
 
-                    case Constant.UNITY:
-//                        unityInterstitialAd = new com.unity3d.mediation.InterstitialAd(activity, unityInterstitialId);
-//                        final IInterstitialAdLoadListener unityAdLoadListener = new IInterstitialAdLoadListener() {
-//                            @Override
-//                            public void onInterstitialLoaded(com.unity3d.mediation.InterstitialAd interstitialAd) {
-//                                Log.d(TAG, "unity interstitial ad loaded");
-//                            }
-//
-//                            @Override
-//                            public void onInterstitialFailedLoad(com.unity3d.mediation.InterstitialAd interstitialAd, LoadError loadError, String s) {
-//                                Log.e(TAG, "Unity Ads failed to load ad : " + unityInterstitialId + " : error : " + s);
-//                            }
-//
-//                        };
-//                        unityInterstitialAd.load(unityAdLoadListener);
-                        break;
-
-                        case Constant.CHARTBOOST:
-                        chartboostInterstitial = new Interstitial("start",new InterstitialCallback() {
-                            @Override
-                            public void onAdLoaded(@NonNull CacheEvent cacheEvent, @Nullable CacheError cacheError) {
-                                if (cacheError != null) {
-                                    //addToUILog("Interstitial cached error: " + cacheError.getCode().name());
-                                    // incrementCounter(failLoadCounter);
-                                    Log.d(TAG, "  chartboostInterstitial cacheError");
-                                   // loadBackupInterstitialAd();
-                                } else {
-                                    //addToUILog("Interstitial cached");
-                                    Log.d(TAG, "  chartboostInterstitial on ad loaded");
-                                    // if(chartboostInterstitial != null) { chartboostInterstitial.cache();}
-                                    // chartboostInterstitial.cache();
-                                }
-                            }
-                            @Override
-                            public void onAdClicked(@NonNull ClickEvent clickEvent, @Nullable ClickError clickError) { }
-                            @Override
-                            public void onAdRequestedToShow(@NonNull ShowEvent showEvent) { }
-
-                            @Override
-                            public void onAdShown(@NonNull ShowEvent showEvent, @Nullable ShowError showError) {
-                                if(showError != null) {
-                                    // loadBackupInterstitialAd();
-                                    // chartboostInterstitial.cache();
-                                }else {
-                                    // chartboostInterstitial.cache();
-                                }
-                            }
-
-                            @Override
-                            public void onImpressionRecorded(@NonNull ImpressionEvent impressionEvent) {}
-
-                            @Override
-                            public void onAdDismiss(@NonNull DismissEvent dismissEvent) { }
-
-                        }, null);
-                        chartboostInterstitial.cache();
-                        break;
-
                     case Constant.IRONSOURCE:
                         IronSource.setInterstitialListener(new InterstitialListener() {
                             @Override
@@ -493,37 +363,6 @@ public class InterstitialAd {
                             }
                             break;
 
-                        case Constant.UNITY:
-//                            final IInterstitialAdShowListener showListener = new IInterstitialAdShowListener() {
-//                                @Override
-//                                public void onInterstitialShowed(com.unity3d.mediation.InterstitialAd interstitialAd) {
-//
-//                                }
-//
-//                                @Override
-//                                public void onInterstitialClicked(com.unity3d.mediation.InterstitialAd interstitialAd) {
-//
-//                                }
-//
-//                                @Override
-//                                public void onInterstitialClosed(com.unity3d.mediation.InterstitialAd interstitialAd) {
-//
-//                                }
-//
-//                                @Override
-//                                public void onInterstitialFailedShow(com.unity3d.mediation.InterstitialAd interstitialAd, ShowError showError, String s) {
-//                                    Log.d(TAG, "unity ads show failure");
-//                                    showBackupInterstitialAd();
-//                                }
-//                            };
-//                            unityInterstitialAd.show(showListener);
-                            break;
-
-                        case Constant.CHARTBOOST:
-                            if(chartboostInterstitial != null) {
-                                chartboostInterstitial.show();
-                            }
-                            break;
 
                         case Constant.IRONSOURCE:
                             if (IronSource.isInterstitialReady()) {
@@ -556,38 +395,6 @@ public class InterstitialAd {
                             startAppAd.showAd();
                         }
                         break;
-
-                    case Constant.UNITY:
-//                        final IInterstitialAdShowListener showListener = new IInterstitialAdShowListener() {
-//                            @Override
-//                            public void onInterstitialShowed(com.unity3d.mediation.InterstitialAd interstitialAd) {
-//
-//                            }
-//
-//                            @Override
-//                            public void onInterstitialClicked(com.unity3d.mediation.InterstitialAd interstitialAd) {
-//
-//                            }
-//
-//                            @Override
-//                            public void onInterstitialClosed(com.unity3d.mediation.InterstitialAd interstitialAd) {
-//
-//                            }
-//
-//                            @Override
-//                            public void onInterstitialFailedShow(com.unity3d.mediation.InterstitialAd interstitialAd, ShowError showError, String s) {
-//                                Log.d(TAG, "unity ads show failure");
-//                                showBackupInterstitialAd();
-//                            }
-//                        };
-//                        unityInterstitialAd.show(showListener);
-                        break;
-                    case Constant.CHARTBOOST:
-                        if(chartboostInterstitial != null) {
-                            chartboostInterstitial.show();
-                        }
-                        break;
-
                     case Constant.IRONSOURCE:
                         if (IronSource.isInterstitialReady()) {
                             IronSource.showInterstitial(ironSourceInterstitialId);
